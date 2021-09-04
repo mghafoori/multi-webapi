@@ -1,18 +1,37 @@
+using System;
+using CacheWebApi.Models;
+using CacheWebApi.Validators;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Cache.WebApi.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/v1")]
     public class CacheController : ControllerBase
     {
+        private readonly ILogger<CacheController> _logger;
         private readonly ICacheStore _cache;
+        private readonly IValidator<CacheItemModel> _validator;
 
-        public CacheController(ICacheStore cache) => _cache = cache;
+        public CacheController(
+            ILogger<CacheController> logger,
+            ICacheStore cache,
+            IValidator<CacheItemModel> validator
+        ) =>
+            (_logger, _cache, _validator)
+            =
+            (logger, cache, validator);
 
-        [HttpGet("key")]
+        [HttpGet]
+        [Route("{key}")]
         public IActionResult Get(string key)
         {
+            if (string.IsNullOrEmpty(key))
+            {
+                return BadRequest("'key' is required.");
+            }
             var value = _cache.Get(key);
             if (value == null)
             {
@@ -22,28 +41,67 @@ namespace Cache.WebApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(string key, string value)
+        public ActionResult Add([FromBody] CacheItemModel model)
         {
-            if (_cache.Add(key, value))
+            try
             {
-                return Ok();
+                var (validationResult, validationMessage) = _validator.Validate(model);
+                if (!validationResult)
+                {
+                    return BadRequest(validationMessage);
+                }
+                if (_cache.Add(model.Key, model.Value))
+                {
+                    return Ok();
+                }
+                return Conflict();
             }
-            return Conflict();
+            catch (Exception ex)
+            {
+                var logId = Guid.NewGuid();
+                _logger.LogError(ex, ex.Message, logId);
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    logId
+                );
+            }
         }
 
         [HttpPut]
-        public ActionResult Update(string key, string value)
+        public ActionResult Update([FromBody] CacheItemModel model)
         {
-            if (_cache.Update(key, value))
+            try
             {
-                return Ok();
+                var (validationResult, validationMessage) = _validator.Validate(model);
+                if (!validationResult)
+                {
+                    return BadRequest(validationMessage);
+                }
+                if (_cache.Update(model.Key, model.Value))
+                {
+                    return Ok();
+                }
+                return Conflict();
             }
-            return Conflict();
+            catch (Exception ex)
+            {
+                var logId = Guid.NewGuid();
+                _logger.LogError(ex, ex.Message, logId);
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    logId
+                );
+            }
         }
 
         [HttpDelete]
+        [Route("{key}")]
         public ActionResult Delete(string key)
         {
+            if (string.IsNullOrEmpty(key))
+            {
+                return BadRequest("'key' is required.");
+            }
             if (_cache.Delete(key))
             {
                 return Ok();

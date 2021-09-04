@@ -1,4 +1,6 @@
 using Cache.WebApi;
+using CacheWebApi.Models;
+using CacheWebApi.Validators;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +22,7 @@ namespace cache_webapi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IValidator<CacheItemModel>, CacheItemModelValidator>();
             services.AddSingleton<ICacheStore, CacheStore>();
             services.AddControllers();
             services.AddSwaggerGen(c =>

@@ -1,0 +1,25 @@
+POST https://localhost:5001/api/cache/v1
+Content-Type: application/json
+
+{
+    "key": "mykey1",
+    "value": "my value 1"
+}
+
+###
+
+GET https://localhost:5001/api/cache/v1/mykey1
+
+###
+
+PUT https://localhost:5001/api/cache/v1
+Content-Type: application/json
+
+{
+    "key": "mykey1",
+    "value": "my updated value 1"
+}
+
+###
+
+DELETE https://localhost:5001/api/cache/v1/mykey1
