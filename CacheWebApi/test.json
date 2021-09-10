@@ -1,0 +1,10 @@
+{
+    "SomeApiKeys": {
+        "Api1": {
+            "name": "Api Number One",
+            "key": "some_api_test_key"
+        }
+    },
+    "notifications": "admin@domain1.com; admin@domain2.com",
+    "Hello": "From test.json"
+}

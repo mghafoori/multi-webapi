@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using Cache.WebApi;
 using CacheWebApi.Models;
 using CacheWebApi.Validators;
@@ -15,6 +17,10 @@ namespace cache_webapi
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            foreach (var item in configuration.AsEnumerable().OrderBy(c => c.Key))
+            {
+                Console.WriteLine($"{item.Key}: {item.Value}");
+            }
         }
 
         public IConfiguration Configuration { get; }
@@ -51,6 +57,15 @@ namespace cache_webapi
             {
                 endpoints.MapControllers();
             });
+
+            // app.Use(async (context, next) =>
+            // {
+            //     Console.WriteLine("I am a new middleware");
+            //     // Call the next delegate/middleware in the pipeline
+            //     await next();
+            // });
+
+            app.UseRequestCulture();
         }
     }
 }
