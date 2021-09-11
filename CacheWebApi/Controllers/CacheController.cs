@@ -1,6 +1,8 @@
 using System;
+using Cache.WebApi.Attributes;
 using CacheWebApi.Models;
 using CacheWebApi.Validators;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -9,6 +11,7 @@ namespace Cache.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]/v1")]
+    [Authorize]
     public class CacheController : ControllerBase
     {
         private readonly ILogger<CacheController> _logger;
@@ -26,6 +29,7 @@ namespace Cache.WebApi.Controllers
 
         [HttpGet]
         [Route("{key}")]
+        [CustomCulture("en", "fr", "es")]
         public IActionResult Get(string key)
         {
             if (string.IsNullOrEmpty(key))
@@ -41,6 +45,7 @@ namespace Cache.WebApi.Controllers
         }
 
         [HttpPost]
+        [CustomCulture("en", "fr")]
         public ActionResult Add([FromBody] CacheItemModel model)
         {
             try

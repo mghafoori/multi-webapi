@@ -4,7 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace cache_webapi
+namespace Cache.WebApi.Middlewares
 {
     public class CustomHeaderMiddleware
     {

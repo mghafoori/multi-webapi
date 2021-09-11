@@ -3,7 +3,7 @@ custom-header: DistDevRequest
 
 ###
 
-POST https://localhost:6001/api/cache/v1?culture=en-CA
+POST https://localhost:6001/api/cache/v1?culture=en
 Content-Type: application/json
 custom-header: DistDevRequest
 

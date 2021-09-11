@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Cache.WebApi;
+using Cache.WebApi.Middlewares;
 using CacheWebApi.Models;
 using CacheWebApi.Validators;
 using Microsoft.AspNetCore.Builder;

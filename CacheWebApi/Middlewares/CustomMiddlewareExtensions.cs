@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 
-namespace cache_webapi
+namespace Cache.WebApi.Middlewares
 {
     public static class CustomMiddlewareExtensions
     {
