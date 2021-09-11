@@ -1,5 +1,11 @@
-POST https://localhost:5001/api/cache/v1
+GET https://localhost:6001?culture=nothing
+custom-header: DistDevRequest
+
+###
+
+POST https://localhost:6001/api/cache/v1?culture=en-CA
 Content-Type: application/json
+custom-header: DistDevRequest
 
 {
     "key": "mykey1",
@@ -8,12 +14,14 @@ Content-Type: application/json
 
 ###
 
-GET https://localhost:5001/api/cache/v1/mykey1
+GET https://localhost:6001/api/cache/v1/mykey1
+custom-header: DistDevRequest
 
 ###
 
-PUT https://localhost:5001/api/cache/v1
+PUT https://localhost:6001/api/cache/v1
 Content-Type: application/json
+custom-header: DistDevRequest
 
 {
     "key": "mykey1",
@@ -22,4 +30,5 @@ Content-Type: application/json
 
 ###
 
-DELETE https://localhost:5001/api/cache/v1/mykey1
+DELETE https://localhost:6001/api/cache/v1/mykey1
+custom-header: DistDevRequest

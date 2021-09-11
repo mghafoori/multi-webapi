@@ -15,10 +15,11 @@ namespace cache_webapi
 
         public async Task InvokeAsync(HttpContext httpContext)
         {
-                var culture = httpContext.Request.Query["culture"];
-                Console.WriteLine($"Culture: {culture}");
-                // Call the next delegate/middleware in the pipeline
-                await _next(httpContext);
+            var culture = httpContext.Request.Query["culture"];            
+            Console.WriteLine($"Culture: {culture}");
+            httpContext.Response.Headers.Add("culture-code", culture);
+            // Call the next delegate/middleware in the pipeline
+            await _next(httpContext);
         }
     }
 }

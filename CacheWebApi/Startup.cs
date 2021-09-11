@@ -49,7 +49,11 @@ namespace cache_webapi
 
             app.UseHttpsRedirection();
 
+            app.UseCustomHeader();
+
             app.UseRouting();
+
+            app.UseRequestCulture();
 
             app.UseAuthorization();
 
@@ -57,15 +61,6 @@ namespace cache_webapi
             {
                 endpoints.MapControllers();
             });
-
-            // app.Use(async (context, next) =>
-            // {
-            //     Console.WriteLine("I am a new middleware");
-            //     // Call the next delegate/middleware in the pipeline
-            //     await next();
-            // });
-
-            app.UseRequestCulture();
         }
     }
 }
