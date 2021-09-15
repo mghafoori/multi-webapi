@@ -43,6 +43,13 @@ namespace cache_webapi
                         IssuerSigningKey = new SymmetricSecurityKey(keyBytes)
                     }
                 );
+            services.AddAuthorization(options =>
+                options.AddPolicy("OntarioOnly", policy =>
+                    policy.RequireAssertion(context =>
+                        context.User.HasClaim(c => c.Type == "Province" && c.Value == "ON")
+                    )
+                )
+            );
             services.AddScoped<IValidator<CacheItemModel>, CacheItemModelValidator>();
             services.AddSingleton<ICacheStore, CacheStore>();
             services.AddControllers();

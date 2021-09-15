@@ -11,7 +11,7 @@ namespace Cache.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]/v1")]
-    [Authorize]
+    [Authorize(Roles = "Admin, Manager")]
     public class CacheController : ControllerBase
     {
         private readonly ILogger<CacheController> _logger;
@@ -30,6 +30,7 @@ namespace Cache.WebApi.Controllers
         [HttpGet]
         [Route("{key}")]
         [CustomCulture("en", "fr", "es")]
+        [Authorize(Roles = "Teacher", Policy = "OntarioOnly")]        
         public IActionResult Get(string key)
         {
             if (string.IsNullOrEmpty(key))
@@ -46,6 +47,7 @@ namespace Cache.WebApi.Controllers
 
         [HttpPost]
         [CustomCulture("en", "fr")]
+        [Authorize(Roles = "Admin, Manager, Teacher")]
         public ActionResult Add([FromBody] CacheItemModel model)
         {
             try
