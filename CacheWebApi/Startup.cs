@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace cache_webapi
 {
@@ -29,6 +32,17 @@ namespace cache_webapi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Create JWT tokens here: http://jwtbuilder.jamiekurtz.com
+            byte[] keyBytes = Encoding.ASCII.GetBytes("qwertyuiopasdfghjklzxcvbnm123456");
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(config =>
+                    config.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidIssuer = "Distributed Dev Organization",
+                        ValidAudience = "www.humber.ca",
+                        IssuerSigningKey = new SymmetricSecurityKey(keyBytes)
+                    }
+                );
             services.AddScoped<IValidator<CacheItemModel>, CacheItemModelValidator>();
             services.AddSingleton<ICacheStore, CacheStore>();
             services.AddControllers();
@@ -56,6 +70,7 @@ namespace cache_webapi
 
             app.UseRequestCulture();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -1,20 +1,23 @@
 GET https://localhost:6001?culture=nothing
 custom-header: DistDevRequest
+Authorization: Bearer {JWT Token}
 
 ###
 
 POST https://localhost:6001/api/cache/v1?culture=en
 Content-Type: application/json
 custom-header: DistDevRequest
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEaXN0cmlidXRlZCBEZXYgT3JnYW5pemF0aW9uIiwiaWF0IjoxNjMxNTYwNzg1LCJleHAiOjE2MzE1ODAxNDAsImF1ZCI6Ind3dy5odW1iZXIuY2EiLCJzdWIiOiJqcm9ja2V0QGV4YW1wbGUuY29tIiwiR2l2ZW5OYW1lIjoiSm9obm55IiwiU3VybmFtZSI6IlJvY2tldCIsIkVtYWlsIjoianJvY2tldEBleGFtcGxlLmNvbSIsIlJvbGUiOlsiTWFuYWdlciIsIlByb2plY3QgQWRtaW5pc3RyYXRvciJdLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbCI6ImJlZUBleGFtcGxlLmNvbSJ9.dUf4I8OKPDVFtsrbKWDfVUQdcArDgu1LsRtU9QgTDrs
+
 
 {
-    "key": "mykey1",
-    "value": "my value 1"
+    "key": "mykey2",
+    "value": "my value 2"
 }
 
 ###
 
-GET https://localhost:6001/api/cache/v1/mykey1
+GET https://localhost:6001/api/cache/v1/mykey2?culture=en
 custom-header: DistDevRequest
 
 ###
